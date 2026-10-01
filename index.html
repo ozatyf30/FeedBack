@@ -1,0 +1,3074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trainee Feedback Builder</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 30px 18px 60px;
+      background: #f5f7f6;
+      color: #27343d;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: #ffffff;
+      border: 1px solid #dfe5e2;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(30, 45, 55, 0.05);
+    }
+
+    .header h1 {
+      margin: 0 0 7px;
+      color: #243746;
+      font-size: 26px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #6b777e;
+      font-size: 14px;
+    }
+
+    .input-section {
+      background: #ffffff;
+      border: 1px solid #dfe5e2;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(30, 45, 55, 0.05);
+    }
+
+    .input-section label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #334650;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 12px;
+      border: 1px solid #cfd8d4;
+      border-radius: 9px;
+      resize: vertical;
+      outline: none;
+      font: inherit;
+      color: #26343c;
+      background: #fbfcfb;
+    }
+
+    textarea:focus,
+    input:focus,
+    select:focus {
+      border-color: #7cae91;
+      box-shadow: 0 0 0 3px rgba(124, 174, 145, 0.12);
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    button {
+      border: 1px solid #cbd6d1;
+      background: #ffffff;
+      color: #30423c;
+      padding: 9px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      transition: 0.15s ease;
+    }
+
+    button:hover {
+      background: #f2f6f4;
+    }
+
+    button.primary {
+      background: #5f8f73;
+      border-color: #5f8f73;
+      color: #ffffff;
+    }
+
+    button.primary:hover {
+      background: #527f65;
+    }
+
+    button.danger {
+      color: #9a4b4b;
+      border-color: #dfc3c3;
+    }
+
+    .search-row {
+      margin-top: 18px;
+    }
+
+    .search-row input {
+      width: 100%;
+      height: 42px;
+      padding: 0 13px;
+      border: 1px solid #cfd8d4;
+      border-radius: 9px;
+      outline: none;
+      font: inherit;
+      background: #fbfcfb;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .trainee-count {
+      color: #66747a;
+      font-size: 14px;
+    }
+
+    .trainee-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .trainee-card {
+      background: #ffffff;
+      border: 1px solid #dfe5e2;
+      border-radius: 13px;
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(30, 45, 55, 0.04);
+    }
+
+    .trainee-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 17px;
+      cursor: pointer;
+      background: #ffffff;
+      border: 0;
+      text-align: left;
+      color: #263943;
+    }
+
+    .trainee-header:hover {
+      background: #f8faf9;
+    }
+
+    .trainee-arrow {
+      width: 18px;
+      font-size: 13px;
+      color: #63736c;
+      flex: 0 0 18px;
+      text-align: center;
+    }
+
+    .trainee-name-title {
+      font-size: 16px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .trainee-status {
+      font-size: 12px;
+      color: #74817c;
+    }
+
+    .trainee-body {
+      display: none;
+      border-top: 1px solid #e3e9e6;
+      padding: 18px;
+    }
+
+    .trainee-card.open .trainee-body {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .field {
+      background: #fafcfa;
+      border: 1px solid #e0e6e3;
+      border-radius: 9px;
+      padding: 12px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #65736e;
+    }
+
+    select,
+    .number-input,
+    .name-input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid #ccd6d2;
+      border-radius: 7px;
+      padding: 0 10px;
+      outline: none;
+      background: #ffffff;
+      color: #28373e;
+      font: inherit;
+    }
+
+    .name-field {
+      grid-column: span 3;
+    }
+
+    .attendance-section {
+      border: 1px solid #e0e6e3;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 18px;
+      background: #fbfcfb;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      color: #344840;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .attendance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .attendance-item {
+      border: 1px solid #e0e6e3;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .attendance-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .attendance-top label {
+      font-size: 13px;
+      color: #3e4d52;
+      cursor: pointer;
+    }
+
+    .attendance-controls {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .attendance-word {
+      font-size: 12px;
+      color: #68766f;
+      min-height: 16px;
+    }
+
+    .feedback-section {
+      border-top: 1px solid #e4e9e6;
+      padding-top: 18px;
+    }
+
+    .feedback-search {
+      margin-bottom: 12px;
+    }
+
+    .feedback-search input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid #ccd6d2;
+      border-radius: 8px;
+      padding: 0 10px;
+      outline: none;
+      font: inherit;
+      background: #ffffff;
+    }
+
+    .category {
+      border: 1px solid #dfe6e2;
+      border-radius: 9px;
+      margin-bottom: 8px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .category-summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 11px 13px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #40534a;
+      background: #fafcfb;
+      user-select: none;
+    }
+
+    .category-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .category-summary::before {
+      content: "▶";
+      display: inline-block;
+      width: 18px;
+      font-size: 9px;
+      color: #728078;
+    }
+
+    .category[open] > .category-summary::before {
+      content: "▼";
+    }
+
+    .category-summary:hover {
+      background: #f5f8f6;
+    }
+
+    .category-content {
+      padding: 11px 13px 13px;
+      border-top: 1px solid #e6ebe8;
+    }
+
+    .category-type {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      font-weight: 700;
+      color: #718079;
+      margin: 8px 0;
+    }
+
+    .category-type:first-child {
+      margin-top: 0;
+    }
+
+    .checkbox-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #39484d;
+      cursor: pointer;
+      padding: 5px 4px;
+      border-radius: 5px;
+    }
+
+    .check-item:hover {
+      background: #f7f9f8;
+    }
+
+    .check-item input {
+      margin-top: 3px;
+      flex: 0 0 auto;
+      accent-color: #5f8f73;
+    }
+
+    .custom-section {
+      margin-top: 16px;
+    }
+
+    .custom-section label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #465650;
+    }
+
+    .custom-section textarea {
+      min-height: 75px;
+    }
+
+    .preview-section {
+      margin-top: 16px;
+    }
+
+    .preview-box {
+      background: #f6f9f7;
+      border: 1px solid #dbe5df;
+      border-radius: 9px;
+      padding: 13px;
+      min-height: 70px;
+      color: #33443d;
+      font-size: 13px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .empty {
+      background: #ffffff;
+      border: 1px dashed #ccd7d2;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      color: #78847f;
+      font-size: 14px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #30443a;
+      color: #ffffff;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: 0.2s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .name-field {
+        grid-column: span 1;
+      }
+
+      .attendance-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 15px 10px 40px;
+      }
+
+      .header,
+      .input-section {
+        padding: 15px;
+      }
+
+      .trainee-body {
+        padding: 12px;
+      }
+
+      .attendance-controls {
+        grid-template-columns: 90px 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <h1>Trainee Feedback Builder</h1>
+    <p>Create individualized training feedback quickly and consistently.</p>
+  </div>
+
+  <div class="input-section">
+
+    <label for="traineeNames">
+      Trainee Names — one name per line
+    </label>
+
+    <textarea
+      id="traineeNames"
+      placeholder="Ahmed&#10;Mohamed&#10;Sara&#10;Omar"
+    ></textarea>
+
+    <div class="top-actions">
+
+      <button class="primary" onclick="addTrainees()">
+        Add Trainees
+      </button>
+
+      <button onclick="copyAllFeedback()">
+        Copy All Feedback
+      </button>
+
+      <button class="danger" onclick="clearAll()">
+        Clear All
+      </button>
+
+    </div>
+
+    <div class="search-row">
+
+      <input
+        id="globalSearch"
+        type="text"
+        placeholder="Search trainees..."
+        oninput="render()"
+      >
+
+    </div>
+
+  </div>
+
+  <div class="toolbar">
+
+    <div class="trainee-count" id="traineeCount">
+      0 trainees
+    </div>
+
+  </div>
+
+  <div id="traineeList" class="trainee-list"></div>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+  /* =========================================================
+     FEEDBACK LIBRARY
+     ========================================================= */
+
+  const feedbackLibrary = [
+
+    {
+      category: "General Performance",
+      positive: [
+        "The trainee was engaged throughout sessions",
+        "maintained good overall performance",
+        "showed consistent performance throughout the training",
+        "showed strong improvement throughout the training",
+        "stood out through consistent performance and active participation",
+        "recognized as one of the top trainees"
+      ],
+      bad: [
+        "He/she has unstable performance through the training period and can’t keep the same level."
+      ]
+    },
+
+    {
+      category: "Knowledge",
+      positive: [
+        "demonstrated good understanding of the training material",
+        "showed strong understanding of the process",
+        "showed good technical knowledge during sessions",
+        "showed excellent technical knowledge in role plays",
+        "demonstrated strong technical knowledge in role plays",
+        "demonstrated good knowledge during discussions",
+        "demonstrated a high level of understanding across different topics",
+        "showed good comprehension during training discussions"
+      ],
+      bad: [
+        "Lack of understanding technical knowledge tested from the technical quizzez results.",
+        "Lack of understanding in some specific topics tested from the technical quizzes.",
+        "Knowledge: lack of understanding in some specific topics tested from “Asynchronous activities”.",
+        "Lack of understanding in some specific topics tested from “synchronous activities”."
+      ]
+    },
+
+    {
+      category: "English",
+      positive: [
+        "showed good English skills through reading, answering questions, and participating in role plays",
+        "showed good English comprehension during the sessions",
+        "showed good English speaking skills during discussions",
+        "showed good English communication skills through her/his answers during the sessions",
+        "communicated clearly during role plays",
+        "demonstrated good pronunciation and communication skills",
+        "demonstrated good English comprehension during training",
+        "showed good ability to understand questions in English"
+      ],
+      bad: [
+        "Lack of English language knowledge tested from inability to comprehend questions in the quizzes.",
+        "Lack of understanding because of shortage in English reading skills tested from inability to comprehend training handouts and written material.",
+        "Lack of English speaking skills tested from daily discussions through the training period."
+      ]
+    },
+
+    {
+      category: "Activities / Role Plays",
+      positive: [
+        "showed strong performance in role plays",
+        "demonstrated strong performance during role plays",
+        "showed good performance during practical activities",
+        "showed strong performance in role plays with multiple practice scenarios",
+        "showed good concentration in activities",
+        "applied the learned knowledge effectively during activities",
+        "showed good ability to apply the training content",
+        "demonstrated strong performance across different role play scenarios",
+        "showed good presentation skills during activities"
+      ],
+      bad: [
+        "Lack of applying what he/she has learned tested from role plays.",
+        "Lack of concentration tested from the activities.",
+        "Lack of presentation skills tested from the activities."
+      ]
+    },
+
+    {
+      category: "Communication",
+      positive: [
+        "showed good interaction during sessions",
+        "communicated effectively during training activities",
+        "showed good teamwork and cooperation with other trainees",
+        "expressed ideas clearly during discussions",
+        "demonstrated strong communication and interaction skills",
+        "showed good interaction with other trainees",
+        "provided relevant answers during sessions"
+      ],
+      bad: [
+        "Lack of communicating with other trainees",
+        "Aggressive attitude so he/she can’t communicate well with his colleagues"
+      ]
+    },
+
+    {
+      category: "Participation",
+      positive: [
+        "actively participated in sessions",
+        "maintained active participation during discussions",
+        "contributed positively during group activities",
+        "showed willingness to participate in different activities",
+        "responds to questions when asked",
+        "showed outstanding participation throughout the training"
+      ],
+      bad: [
+        "Lack of participation tested from daily tasks"
+      ]
+    },
+
+    {
+      category: "Learning & Improvement",
+      positive: [
+        "learns quickly",
+        "demonstrated the ability to learn new concepts quickly",
+        "showed strong motivation to improve and learn",
+        "was receptive to feedback and applied it effectively",
+        "showed improvement based on the feedback provided",
+        "adapted quickly to new topics and activities",
+        "demonstrated excellent learning ability",
+        "showed strong adaptability to different training activities"
+      ],
+      bad: [
+        "Lack of understanding because of the absenteeism."
+      ]
+    },
+
+    {
+      category: "Commitment",
+      positive: [
+        "highly committed to training",
+        "demonstrated good commitment to the training activities",
+        "completed all daily quizzes successfully",
+        "showed good consistency in completing assigned tasks",
+        "completed assigned activities within the required time",
+        "maintained a positive attitude throughout the training",
+        "showed strong willingness to learn"
+      ],
+      bad: [
+        "Lack of commitment tested from the asynchronous activities"
+      ]
+    }
+
+  ];
+
+
+  /* =========================================================
+     STORAGE
+     ========================================================= */
+
+  const STORAGE_KEY = "trainee_feedback_builder_v5";
+
+  let trainees = [];
+
+
+  /* =========================================================
+     ID
+     ========================================================= */
+
+  function createId() {
+    return "t_" + Date.now().toString(36) + "_" +
+      Math.random().toString(36).substring(2, 9);
+  }
+
+
+  /* =========================================================
+     FIND TRAINEE
+     ========================================================= */
+
+  function findTrainee(id) {
+    return trainees.find(function(trainee) {
+      return trainee.id === id;
+    });
+  }
+
+
+  /* =========================================================
+     CREATE TRAINEE
+     ========================================================= */
+
+  function createTrainee(name) {
+
+    return {
+      id: createId(),
+      name: name,
+      gender: "He",
+      finalQuiz: "Passed",
+      dailyQuiz: "Completed all daily quizzes successfully",
+      tardyEnabled: false,
+      tardyCount: 1,
+      absentEnabled: false,
+      absentCount: 1,
+      selected: [],
+      custom: "",
+      open: false
+    };
+
+  }
+
+
+  /* =========================================================
+     ADD TRAINEES
+     ========================================================= */
+
+  function addTrainees() {
+
+    const textarea =
+      document.getElementById("traineeNames");
+
+    const names =
+      textarea.value
+        .split("\n")
+        .map(function(name) {
+          return name.trim();
+        })
+        .filter(function(name) {
+          return name.length > 0;
+        });
+
+
+    if (!names.length) {
+
+      showToast(
+        "Please enter at least one trainee name."
+      );
+
+      return;
+    }
+
+
+    names.forEach(function(name) {
+      trainees.push(
+        createTrainee(name)
+      );
+    });
+
+
+    textarea.value = "";
+
+    saveData();
+
+    render();
+
+    showToast(
+      names.length + " trainee(s) added."
+    );
+
+  }
+
+
+  /* =========================================================
+     RENDER
+     ========================================================= */
+
+  function render() {
+
+    const list =
+      document.getElementById("traineeList");
+
+    const count =
+      document.getElementById("traineeCount");
+
+    const search =
+      document.getElementById("globalSearch")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const filtered =
+      trainees.filter(function(trainee) {
+
+        if (!search) {
+          return true;
+        }
+
+        return trainee.name
+          .toLowerCase()
+          .includes(search);
+
+      });
+
+
+    count.textContent =
+      trainees.length +
+      (
+        trainees.length === 1
+          ? " trainee"
+          : " trainees"
+      );
+
+
+    if (!filtered.length) {
+
+      list.innerHTML = `
+        <div class="empty">
+          ${
+            trainees.length
+              ? "No trainees match your search."
+              : "No trainees added yet."
+          }
+        </div>
+      `;
+
+      return;
+    }
+
+
+    list.innerHTML =
+      filtered
+        .map(function(trainee, index) {
+          return createTraineeHTML(
+            trainee,
+            index
+          );
+        })
+        .join("");
+
+  }
+
+
+  /* =========================================================
+     TRAINEE HTML
+     ========================================================= */
+
+  function createTraineeHTML(
+    trainee,
+    index
+  ) {
+
+    /*
+      Only actual feedback counts as
+      "Feedback ready".
+
+      Default Final Quiz and Daily Quizzes
+      do NOT count as feedback.
+    */
+
+    const hasFeedback =
+      trainee.selected.length > 0 ||
+      trainee.custom.trim() !== "" ||
+      trainee.tardyEnabled ||
+      trainee.absentEnabled;
+
+
+    return `
+
+      <div
+        class="trainee-card ${trainee.open ? "open" : ""}"
+        id="card-${escapeHTML(trainee.id)}"
+      >
+
+        <button
+          class="trainee-header"
+          onclick="toggleTrainee('${trainee.id}')"
+          type="button"
+        >
+
+          <span class="trainee-arrow">
+            ${trainee.open ? "▼" : "▶"}
+          </span>
+
+          <span class="trainee-name-title">
+            ${escapeHTML(
+              trainee.name ||
+              "Unnamed Trainee"
+            )}
+          </span>
+
+          <span class="trainee-status">
+            ${hasFeedback
+              ? "Feedback ready"
+              : ""}
+          </span>
+
+        </button>
+
+
+        <div class="trainee-body">
+
+          <div class="grid">
+
+            <div class="field name-field">
+
+              <label>
+                Trainee Name
+              </label>
+
+              <input
+                class="name-input"
+                type="text"
+                value="${escapeAttribute(
+                  trainee.name
+                )}"
+                oninput="updateName(
+                  '${trainee.id}',
+                  this.value
+                )"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Gender
+              </label>
+
+              <select
+                onchange="updateField(
+                  '${trainee.id}',
+                  'gender',
+                  this.value
+                )"
+              >
+
+                <option
+                  value="He"
+                  ${trainee.gender === "He"
+                    ? "selected"
+                    : ""}
+                >
+                  He
+                </option>
+
+                <option
+                  value="She"
+                  ${trainee.gender === "She"
+                    ? "selected"
+                    : ""}
+                >
+                  She
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Final Quiz
+              </label>
+
+              <select
+                onchange="updateField(
+                  '${trainee.id}',
+                  'finalQuiz',
+                  this.value
+                )"
+              >
+
+                <option
+                  value="Passed"
+                  ${trainee.finalQuiz === "Passed"
+                    ? "selected"
+                    : ""}
+                >
+                  Passed
+                </option>
+
+                <option
+                  value="Didn't pass"
+                  ${trainee.finalQuiz === "Didn't pass"
+                    ? "selected"
+                    : ""}
+                >
+                  Didn't pass
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Daily Quizzes
+              </label>
+
+              <select
+                onchange="updateField(
+                  '${trainee.id}',
+                  'dailyQuiz',
+                  this.value
+                )"
+              >
+
+                <option
+                  value="Completed all daily quizzes successfully"
+                  ${trainee.dailyQuiz ===
+                    "Completed all daily quizzes successfully"
+                    ? "selected"
+                    : ""}
+                >
+                  Completed all daily quizzes successfully
+                </option>
+
+                <option
+                  value="missed daily quizzes, coaching was provided"
+                  ${trainee.dailyQuiz ===
+                    "missed daily quizzes, coaching was provided"
+                    ? "selected"
+                    : ""}
+                >
+                  missed daily quizzes, coaching was provided
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+          <!-- ATTENDANCE -->
+
+          <div class="attendance-section">
+
+            <div class="section-title">
+              Attendance & Commitment
+            </div>
+
+            <div class="attendance-grid">
+
+              <div class="attendance-item">
+
+                <div class="attendance-top">
+
+                  <input
+                    id="tardy-${escapeAttribute(
+                      trainee.id
+                    )}"
+                    type="checkbox"
+                    ${trainee.tardyEnabled
+                      ? "checked"
+                      : ""}
+                    onchange="toggleAttendance(
+                      '${trainee.id}',
+                      'tardyEnabled',
+                      this.checked
+                    )"
+                  >
+
+                  <label
+                    for="tardy-${escapeAttribute(
+                      trainee.id
+                    )}"
+                  >
+                    Tardy
+                  </label>
+
+                </div>
+
+                <div class="attendance-controls">
+
+                  <input
+                    class="number-input"
+                    type="number"
+                    min="1"
+                    value="${normalizeCount(
+                      trainee.tardyCount
+                    )}"
+                    ${trainee.tardyEnabled
+                      ? ""
+                      : "disabled"}
+                    onchange="updateAttendanceCount(
+                      '${trainee.id}',
+                      'tardyCount',
+                      this.value
+                    )"
+                  >
+
+                  <div
+                    class="attendance-word"
+                    id="tardy-word-${escapeAttribute(
+                      trainee.id
+                    )}"
+                  >
+                    ${trainee.tardyEnabled
+                      ? numberToWords(
+                          normalizeCount(
+                            trainee.tardyCount
+                          )
+                        )
+                      : ""}
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="attendance-item">
+
+                <div class="attendance-top">
+
+                  <input
+                    id="absent-${escapeAttribute(
+                      trainee.id
+                    )}"
+                    type="checkbox"
+                    ${trainee.absentEnabled
+                      ? "checked"
+                      : ""}
+                    onchange="toggleAttendance(
+                      '${trainee.id}',
+                      'absentEnabled',
+                      this.checked
+                    )"
+                  >
+
+                  <label
+                    for="absent-${escapeAttribute(
+                      trainee.id
+                    )}"
+                  >
+                    Absent
+                  </label>
+
+                </div>
+
+                <div class="attendance-controls">
+
+                  <input
+                    class="number-input"
+                    type="number"
+                    min="1"
+                    value="${normalizeCount(
+                      trainee.absentCount
+                    )}"
+                    ${trainee.absentEnabled
+                      ? ""
+                      : "disabled"}
+                    onchange="updateAttendanceCount(
+                      '${trainee.id}',
+                      'absentCount',
+                      this.value
+                    )"
+                  >
+
+                  <div
+                    class="attendance-word"
+                    id="absent-word-${escapeAttribute(
+                      trainee.id
+                    )}"
+                  >
+                    ${trainee.absentEnabled
+                      ? numberToWords(
+                          normalizeCount(
+                            trainee.absentCount
+                          )
+                        )
+                      : ""}
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- FEEDBACK -->
+
+          <div class="feedback-section">
+
+            <div class="section-title">
+              Feedback Comments
+            </div>
+
+            <div class="feedback-search">
+
+              <input
+                id="feedback-search-${escapeAttribute(
+                  trainee.id
+                )}"
+                type="text"
+                placeholder="Search feedback comments..."
+                oninput="filterFeedback(
+                  '${trainee.id}',
+                  this.value
+                )"
+              >
+
+            </div>
+
+            <div
+              id="feedback-box-${escapeAttribute(
+                trainee.id
+              )}"
+            >
+              ${renderCategories(
+                trainee,
+                ""
+              )}
+            </div>
+
+          </div>
+
+
+          <!-- CUSTOM -->
+
+          <div class="custom-section">
+
+            <label
+              for="custom-${escapeAttribute(
+                trainee.id
+              )}"
+            >
+              Custom Comment
+            </label>
+
+            <textarea
+              id="custom-${escapeAttribute(
+                trainee.id
+              )}"
+              placeholder="Write an additional comment..."
+              oninput="updateCustom(
+                '${trainee.id}',
+                this.value
+              )"
+            >${escapeHTML(
+              trainee.custom
+            )}</textarea>
+
+          </div>
+
+
+          <!-- PREVIEW -->
+
+          <div class="preview-section">
+
+            <div class="section-title">
+              Feedback Preview
+            </div>
+
+            <div
+              class="preview-box"
+              id="preview-${escapeAttribute(
+                trainee.id
+              )}"
+            >
+              ${escapeHTML(
+                generateFeedback(
+                  trainee
+                )
+              )}
+            </div>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="card-actions">
+
+            <button
+              class="primary"
+              onclick="copyFeedback(
+                '${trainee.id}'
+              )"
+              type="button"
+            >
+              Copy Feedback
+            </button>
+
+            <button
+              onclick="clearTrainee(
+                '${trainee.id}'
+              )"
+              type="button"
+            >
+              Clear
+            </button>
+
+            <button
+              class="danger"
+              onclick="removeTrainee(
+                '${trainee.id}'
+              )"
+              type="button"
+            >
+              Remove Trainee
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* =========================================================
+     TOGGLE TRAINEE
+     ========================================================= */
+
+  function toggleTrainee(id) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    trainee.open =
+      !trainee.open;
+
+    saveData();
+
+    render();
+
+  }
+
+
+  /* =========================================================
+     RENDER CATEGORIES
+     ========================================================= */
+
+  function renderCategories(
+    trainee,
+    search
+  ) {
+
+    const query =
+      String(search || "")
+        .toLowerCase()
+        .trim();
+
+
+    return feedbackLibrary
+      .map(function(
+        category,
+        categoryIndex
+      ) {
+
+        const positive =
+          category.positive
+            .map(function(
+              item,
+              itemIndex
+            ) {
+
+              return {
+                item: item,
+                itemIndex: itemIndex,
+                type: "positive"
+              };
+
+            })
+            .filter(function(entry) {
+
+              return !query ||
+                entry.item
+                  .toLowerCase()
+                  .includes(query);
+
+            });
+
+
+        const bad =
+          category.bad
+            .map(function(
+              item,
+              itemIndex
+            ) {
+
+              return {
+                item: item,
+                itemIndex: itemIndex,
+                type: "bad"
+              };
+
+            })
+            .filter(function(entry) {
+
+              return !query ||
+                entry.item
+                  .toLowerCase()
+                  .includes(query);
+
+            });
+
+
+        if (
+          !positive.length &&
+          !bad.length
+        ) {
+          return "";
+        }
+
+
+        const hasMatch =
+          query.length > 0;
+
+
+        return `
+
+          <details
+            class="category"
+            ${hasMatch ? "open" : ""}
+          >
+
+            <summary
+              class="category-summary"
+            >
+              ${escapeHTML(
+                category.category
+              )}
+            </summary>
+
+            <div class="category-content">
+
+              ${
+                positive.length
+                  ? `
+
+                    <div class="category-type">
+                      Positive
+                    </div>
+
+                    <div class="checkbox-list">
+
+                      ${
+                        positive
+                          .map(function(entry) {
+
+                            const checked =
+                              trainee.selected
+                                .includes(
+                                  entry.item
+                                );
+
+
+                            return `
+
+                              <label
+                                class="check-item"
+                              >
+
+                                <input
+                                  type="checkbox"
+                                  ${checked
+                                    ? "checked"
+                                    : ""}
+                                  onchange="toggleComment(
+                                    '${trainee.id}',
+                                    ${categoryIndex},
+                                    ${entry.itemIndex},
+                                    'positive'
+                                  )"
+                                >
+
+                                <span>
+                                  ${escapeHTML(
+                                    entry.item
+                                  )}
+                                </span>
+
+                              </label>
+
+                            `;
+
+                          })
+                          .join("")
+                      }
+
+                    </div>
+
+                  `
+                  : ""
+              }
+
+
+              ${
+                bad.length
+                  ? `
+
+                    <div class="category-type">
+                      Bad
+                    </div>
+
+                    <div class="checkbox-list">
+
+                      ${
+                        bad
+                          .map(function(entry) {
+
+                            const checked =
+                              trainee.selected
+                                .includes(
+                                  entry.item
+                                );
+
+
+                            return `
+
+                              <label
+                                class="check-item"
+                              >
+
+                                <input
+                                  type="checkbox"
+                                  ${checked
+                                    ? "checked"
+                                    : ""}
+                                  onchange="toggleComment(
+                                    '${trainee.id}',
+                                    ${categoryIndex},
+                                    ${entry.itemIndex},
+                                    'bad'
+                                  )"
+                                >
+
+                                <span>
+                                  ${escapeHTML(
+                                    entry.item
+                                  )}
+                                </span>
+
+                              </label>
+
+                            `;
+
+                          })
+                          .join("")
+                      }
+
+                    </div>
+
+                  `
+                  : ""
+              }
+
+            </div>
+
+          </details>
+
+        `;
+
+      })
+      .join("");
+
+  }
+
+
+  /* =========================================================
+     FILTER FEEDBACK
+     ========================================================= */
+
+  function filterFeedback(
+    id,
+    search
+  ) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    const box =
+      document.getElementById(
+        "feedback-box-" + id
+      );
+
+    if (!box) {
+      return;
+    }
+
+    box.innerHTML =
+      renderCategories(
+        trainee,
+        search
+      );
+
+  }
+
+
+  /* =========================================================
+     UPDATE NAME
+     ========================================================= */
+
+  function updateName(
+    id,
+    value
+  ) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    trainee.name =
+      value;
+
+    saveData();
+
+    const title =
+      document.querySelector(
+        "#card-" +
+        id +
+        " .trainee-name-title"
+      );
+
+    if (title) {
+
+      title.textContent =
+        value.trim() ||
+        "Unnamed Trainee";
+
+    }
+
+  }
+
+
+  /* =========================================================
+     UPDATE FIELD
+     ========================================================= */
+
+  function updateField(
+    id,
+    field,
+    value
+  ) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    trainee[field] =
+      value;
+
+    saveData();
+
+    updatePreview(id);
+
+  }
+
+
+  /* =========================================================
+     UPDATE CUSTOM
+     ========================================================= */
+
+  function updateCustom(
+    id,
+    value
+  ) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    trainee.custom =
+      value;
+
+    saveData();
+
+    updatePreview(id);
+
+    updateFeedbackStatus(id);
+
+  }
+
+
+  /* =========================================================
+     UPDATE FEEDBACK STATUS
+     ========================================================= */
+
+  function updateFeedbackStatus(id) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    const card =
+      document.getElementById(
+        "card-" + id
+      );
+
+    if (!card) {
+      return;
+    }
+
+    const status =
+      card.querySelector(
+        ".trainee-status"
+      );
+
+    if (!status) {
+      return;
+    }
+
+    const hasFeedback =
+      trainee.selected.length > 0 ||
+      trainee.custom.trim() !== "" ||
+      trainee.tardyEnabled ||
+      trainee.absentEnabled;
+
+    status.textContent =
+      hasFeedback
+        ? "Feedback ready"
+        : "";
+
+  }
+
+
+  /* =========================================================
+     TOGGLE COMMENT
+     ========================================================= */
+
+  function toggleComment(
+    id,
+    categoryIndex,
+    itemIndex,
+    type
+  ) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    const category =
+      feedbackLibrary[
+        categoryIndex
+      ];
+
+    if (!category) {
+      return;
+    }
+
+    const list =
+      type === "positive"
+        ? category.positive
+        : category.bad;
+
+    const comment =
+      list[itemIndex];
+
+    if (!comment) {
+      return;
+    }
+
+    const existingIndex =
+      trainee.selected.indexOf(
+        comment
+      );
+
+
+    if (existingIndex === -1) {
+
+      trainee.selected.push(
+        comment
+      );
+
+    } else {
+
+      trainee.selected.splice(
+        existingIndex,
+        1
+      );
+
+    }
+
+
+    saveData();
+
+    updatePreview(id);
+
+    updateFeedbackStatus(id);
+
+  }
+
+
+  /* =========================================================
+     ATTENDANCE TOGGLE
+     ========================================================= */
+
+  function toggleAttendance(
+    id,
+    field,
+    checked
+  ) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    trainee[field] =
+      checked;
+
+    saveData();
+
+    renderCardBody(id);
+
+  }
+
+
+  /* =========================================================
+     ATTENDANCE COUNT
+     ========================================================= */
+
+  function updateAttendanceCount(
+    id,
+    field,
+    value
+  ) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    trainee[field] =
+      normalizeCount(value);
+
+    saveData();
+
+    updateAttendanceLabels(id);
+
+    updatePreview(id);
+
+  }
+
+
+  /* =========================================================
+     UPDATE ATTENDANCE LABELS
+     ========================================================= */
+
+  function updateAttendanceLabels(id) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    const tardyWord =
+      document.getElementById(
+        "tardy-word-" + id
+      );
+
+    const absentWord =
+      document.getElementById(
+        "absent-word-" + id
+      );
+
+
+    if (tardyWord) {
+
+      tardyWord.textContent =
+        trainee.tardyEnabled
+          ? numberToWords(
+              normalizeCount(
+                trainee.tardyCount
+              )
+            )
+          : "";
+
+    }
+
+
+    if (absentWord) {
+
+      absentWord.textContent =
+        trainee.absentEnabled
+          ? numberToWords(
+              normalizeCount(
+                trainee.absentCount
+              )
+            )
+          : "";
+
+    }
+
+  }
+
+
+  /* =========================================================
+     RENDER CARD BODY
+     ========================================================= */
+
+  function renderCardBody(id) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    const card =
+      document.getElementById(
+        "card-" + id
+      );
+
+    if (!card) {
+      render();
+      return;
+    }
+
+    const wasOpen =
+      trainee.open;
+
+    render();
+
+    const updatedCard =
+      document.getElementById(
+        "card-" + id
+      );
+
+    if (updatedCard) {
+
+      trainee.open =
+        wasOpen;
+
+      updatedCard.classList.toggle(
+        "open",
+        wasOpen
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     GENERATE FEEDBACK
+     ========================================================= */
+
+  function generateFeedback(trainee) {
+
+    /*
+      IMPORTANT:
+      If nothing has been selected or added,
+      return an empty preview.
+
+      Final Quiz and Daily Quizzes alone
+      do not create feedback.
+    */
+
+    const hasActualFeedback =
+      trainee.selected.length > 0 ||
+      trainee.custom.trim() !== "" ||
+      trainee.tardyEnabled ||
+      trainee.absentEnabled;
+
+
+    if (!hasActualFeedback) {
+      return "";
+    }
+
+
+    const parts = [];
+
+
+    const pronoun =
+      trainee.gender === "She"
+        ? "She"
+        : "He";
+
+
+    /* Final quiz */
+
+    if (
+      trainee.finalQuiz === "Passed"
+    ) {
+
+      parts.push(
+        pronoun +
+        " passed the final quiz successfully"
+      );
+
+    } else {
+
+      parts.push(
+        pronoun +
+        " didn't pass the final quiz"
+      );
+
+    }
+
+
+    /* Daily quizzes */
+
+    if (
+      trainee.dailyQuiz ===
+      "Completed all daily quizzes successfully"
+    ) {
+
+      parts.push(
+        "completed all daily quizzes successfully"
+      );
+
+    } else {
+
+      parts.push(
+        "missed daily quizzes, coaching was provided"
+      );
+
+    }
+
+
+    /* Selected feedback */
+
+    trainee.selected.forEach(
+      function(comment) {
+
+        /*
+          Keep selected comments exactly
+          as they are.
+        */
+
+        parts.push(
+          comment.trim()
+        );
+
+      }
+    );
+
+
+    /* Attendance */
+
+    const attendance =
+      buildAttendanceComment(
+        trainee
+      );
+
+
+    if (attendance) {
+
+      parts.push(
+        attendance
+      );
+
+    }
+
+
+    /* Custom comment */
+
+    if (
+      trainee.custom.trim()
+    ) {
+
+      parts.push(
+        trainee.custom.trim()
+      );
+
+    }
+
+
+    /* Build final sentence */
+
+    if (!parts.length) {
+      return "";
+    }
+
+
+    let result =
+      parts
+        .filter(function(part) {
+
+          return String(part)
+            .trim() !== "";
+
+        })
+        .join(", ");
+
+
+    result =
+      result.trim();
+
+
+    /*
+      Make sure there is only one final period.
+    */
+
+    result =
+      result.replace(
+        /[.!?]+$/,
+        ""
+      );
+
+
+    if (result) {
+      result += ".";
+    }
+
+
+    return result;
+
+  }
+
+
+  /* =========================================================
+     ATTENDANCE COMMENT
+     ========================================================= */
+
+  function buildAttendanceComment(
+    trainee
+  ) {
+
+    const tardy =
+      trainee.tardyEnabled
+        ? numberToWords(
+            normalizeCount(
+              trainee.tardyCount
+            )
+          )
+        : null;
+
+
+    const absent =
+      trainee.absentEnabled
+        ? numberToWords(
+            normalizeCount(
+              trainee.absentCount
+            )
+          )
+        : null;
+
+
+    if (!tardy && !absent) {
+      return "";
+    }
+
+
+    if (tardy && absent) {
+
+      return (
+        "showed lack of commitment due to " +
+        tardy +
+        " tardy and " +
+        absent +
+        " absent"
+      );
+
+    }
+
+
+    if (tardy) {
+
+      return (
+        "showed lack of commitment due to " +
+        tardy +
+        " tardy"
+      );
+
+    }
+
+
+    if (absent) {
+
+      return (
+        "showed lack of commitment due to " +
+        absent +
+        " absent"
+      );
+
+    }
+
+
+    return "";
+
+  }
+
+
+  /* =========================================================
+     NUMBER NORMALIZATION
+     ========================================================= */
+
+  function normalizeCount(
+    value
+  ) {
+
+    let number =
+      parseInt(
+        value,
+        10
+      );
+
+
+    if (
+      isNaN(number) ||
+      number < 1
+    ) {
+
+      number = 1;
+
+    }
+
+
+    if (number > 999) {
+
+      number = 999;
+
+    }
+
+
+    return number;
+
+  }
+
+
+  /* =========================================================
+     NUMBER TO WORDS
+     ========================================================= */
+
+  function numberToWords(
+    number
+  ) {
+
+    number =
+      normalizeCount(
+        number
+      );
+
+
+    const ones = [
+      "",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen",
+      "fourteen",
+      "fifteen",
+      "sixteen",
+      "seventeen",
+      "eighteen",
+      "nineteen"
+    ];
+
+
+    const tens = [
+      "",
+      "",
+      "twenty",
+      "thirty",
+      "forty",
+      "fifty",
+      "sixty",
+      "seventy",
+      "eighty",
+      "ninety"
+    ];
+
+
+    if (number < 20) {
+      return ones[number];
+    }
+
+
+    if (number < 100) {
+
+      if (
+        number % 10 === 0
+      ) {
+
+        return tens[
+          Math.floor(
+            number / 10
+          )
+        ];
+
+      }
+
+
+      return (
+        tens[
+          Math.floor(
+            number / 10
+          )
+        ] +
+        "-" +
+        ones[
+          number % 10
+        ]
+      );
+
+    }
+
+
+    if (number < 1000) {
+
+      const hundred =
+        Math.floor(
+          number / 100
+        );
+
+
+      const remainder =
+        number % 100;
+
+
+      if (remainder === 0) {
+
+        return (
+          ones[hundred] +
+          " hundred"
+        );
+
+      }
+
+
+      return (
+        ones[hundred] +
+        " hundred " +
+        numberToWords(
+          remainder
+        )
+      );
+
+    }
+
+
+    return String(number);
+
+  }
+
+
+  /* =========================================================
+     UPDATE PREVIEW
+     ========================================================= */
+
+  function updatePreview(id) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    const preview =
+      document.getElementById(
+        "preview-" + id
+      );
+
+    if (preview) {
+
+      preview.textContent =
+        generateFeedback(
+          trainee
+        );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     UPDATE ALL PREVIEWS
+     ========================================================= */
+
+  function updateAllPreviews() {
+
+    trainees.forEach(
+      function(trainee) {
+
+        updatePreview(
+          trainee.id
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     COPY FEEDBACK
+     ========================================================= */
+
+  function copyFeedback(id) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+    const text =
+      generateFeedback(
+        trainee
+      );
+
+
+    if (!text.trim()) {
+
+      showToast(
+        "There is no feedback to copy."
+      );
+
+      return;
+    }
+
+
+    copyText(text);
+
+  }
+
+
+  /* =========================================================
+     COPY ALL
+     ========================================================= */
+
+  function copyAllFeedback() {
+
+    if (!trainees.length) {
+
+      showToast(
+        "No trainees available."
+      );
+
+      return;
+    }
+
+
+    const blocks =
+      trainees
+        .map(function(trainee) {
+
+          const feedback =
+            generateFeedback(
+              trainee
+            );
+
+
+          if (!feedback.trim()) {
+            return "";
+          }
+
+
+          return (
+            trainee.name.trim() +
+            ":\n" +
+            feedback
+          );
+
+        })
+        .filter(function(block) {
+
+          return block !== "";
+
+        });
+
+
+    if (!blocks.length) {
+
+      showToast(
+        "There is no feedback to copy."
+      );
+
+      return;
+    }
+
+
+    copyText(
+      blocks.join("\n\n")
+    );
+
+  }
+
+
+  /* =========================================================
+     COPY TEXT
+     ========================================================= */
+
+  function copyText(text) {
+
+    if (
+      navigator.clipboard &&
+      navigator.clipboard.writeText
+    ) {
+
+      navigator.clipboard
+        .writeText(text)
+        .then(function() {
+
+          showToast(
+            "Copied successfully."
+          );
+
+        })
+        .catch(function() {
+
+          fallbackCopy(text);
+
+        });
+
+
+      return;
+
+    }
+
+
+    fallbackCopy(text);
+
+  }
+
+
+  /* =========================================================
+     FALLBACK COPY
+     ========================================================= */
+
+  function fallbackCopy(text) {
+
+    const textarea =
+      document.createElement(
+        "textarea"
+      );
+
+
+    textarea.value =
+      text;
+
+
+    textarea.style.position =
+      "fixed";
+
+    textarea.style.left =
+      "-9999px";
+
+
+    document.body.appendChild(
+      textarea
+    );
+
+
+    textarea.select();
+
+
+    try {
+
+      document.execCommand(
+        "copy"
+      );
+
+
+      showToast(
+        "Copied successfully."
+      );
+
+    } catch (error) {
+
+      showToast(
+        "Copy failed. Please copy manually."
+      );
+
+    }
+
+
+    document.body.removeChild(
+      textarea
+    );
+
+  }
+
+
+  /* =========================================================
+     CLEAR TRAINEE
+     ========================================================= */
+
+  function clearTrainee(id) {
+
+    const trainee =
+      findTrainee(id);
+
+    if (!trainee) {
+      return;
+    }
+
+
+    const keepName =
+      trainee.name;
+
+
+    const keepOpen =
+      trainee.open;
+
+
+    const index =
+      trainees.indexOf(
+        trainee
+      );
+
+
+    trainees[index] =
+      createTrainee(
+        keepName
+      );
+
+
+    trainees[index].open =
+      keepOpen;
+
+
+    saveData();
+
+    render();
+
+
+    showToast(
+      "Trainee feedback cleared."
+    );
+
+  }
+
+
+  /* =========================================================
+     REMOVE TRAINEE
+     ========================================================= */
+
+  function removeTrainee(id) {
+
+    trainees =
+      trainees.filter(
+        function(trainee) {
+
+          return trainee.id !== id;
+
+        }
+      );
+
+
+    saveData();
+
+    render();
+
+
+    showToast(
+      "Trainee removed."
+    );
+
+  }
+
+
+  /* =========================================================
+     CLEAR ALL
+     ========================================================= */
+
+  function clearAll() {
+
+    if (!trainees.length) {
+      return;
+    }
+
+
+    const confirmed =
+      confirm(
+        "Are you sure you want to remove all trainees?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    trainees = [];
+
+
+    saveData();
+
+    render();
+
+
+    showToast(
+      "All trainees removed."
+    );
+
+  }
+
+
+  /* =========================================================
+     SAVE
+     ========================================================= */
+
+  function saveData() {
+
+    try {
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(
+          trainees
+        )
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Could not save data:",
+        error
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     LOAD
+     ========================================================= */
+
+  function loadData() {
+
+    try {
+
+      const saved =
+        localStorage.getItem(
+          STORAGE_KEY
+        );
+
+
+      if (!saved) {
+
+        trainees = [];
+
+        return;
+
+      }
+
+
+      const parsed =
+        JSON.parse(
+          saved
+        );
+
+
+      if (!Array.isArray(parsed)) {
+
+        trainees = [];
+
+        return;
+
+      }
+
+
+      trainees =
+        parsed.map(
+          function(trainee) {
+
+            return {
+
+              id:
+                trainee.id ||
+                createId(),
+
+
+              name:
+                trainee.name ||
+                "",
+
+
+              gender:
+                trainee.gender === "She"
+                  ? "She"
+                  : "He",
+
+
+              finalQuiz:
+                trainee.finalQuiz ===
+                "Didn't pass"
+                  ? "Didn't pass"
+                  : "Passed",
+
+
+              dailyQuiz:
+                trainee.dailyQuiz ===
+                "missed daily quizzes, coaching was provided"
+                  ? "missed daily quizzes, coaching was provided"
+                  : "Completed all daily quizzes successfully",
+
+
+              tardyEnabled:
+                Boolean(
+                  trainee.tardyEnabled
+                ),
+
+
+              tardyCount:
+                normalizeCount(
+                  trainee.tardyCount ||
+                  1
+                ),
+
+
+              absentEnabled:
+                Boolean(
+                  trainee.absentEnabled
+                ),
+
+
+              absentCount:
+                normalizeCount(
+                  trainee.absentCount ||
+                  1
+                ),
+
+
+              selected:
+                Array.isArray(
+                  trainee.selected
+                )
+                  ? trainee.selected
+                  : [],
+
+
+              custom:
+                trainee.custom ||
+                "",
+
+
+              open: false
+
+            };
+
+          }
+        );
+
+    } catch (error) {
+
+      console.error(
+        "Could not load saved data:",
+        error
+      );
+
+
+      trainees = [];
+
+    }
+
+  }
+
+
+  /* =========================================================
+     ESCAPE HTML
+     ========================================================= */
+
+  function escapeHTML(value) {
+
+    return String(value)
+
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+
+      .replace(
+        /</g,
+        "&lt;"
+      )
+
+      .replace(
+        />/g,
+        "&gt;"
+      )
+
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+
+  }
+
+
+  /* =========================================================
+     ESCAPE ATTRIBUTE
+     ========================================================= */
+
+  function escapeAttribute(
+    value
+  ) {
+
+    return escapeHTML(
+      value
+    );
+
+  }
+
+
+  /* =========================================================
+     TOAST
+     ========================================================= */
+
+  let toastTimer =
+    null;
+
+
+  function showToast(
+    message
+  ) {
+
+    const toast =
+      document.getElementById(
+        "toast"
+      );
+
+
+    toast.textContent =
+      message;
+
+
+    toast.classList.add(
+      "show"
+    );
+
+
+    clearTimeout(
+      toastTimer
+    );
+
+
+    toastTimer =
+      setTimeout(
+        function() {
+
+          toast.classList.remove(
+            "show"
+          );
+
+        },
+        2200
+      );
+
+  }
+
+
+  /* =========================================================
+     INITIALIZE
+     ========================================================= */
+
+  loadData();
+
+  render();
+
+</script>
+
+</body>
+</html>
